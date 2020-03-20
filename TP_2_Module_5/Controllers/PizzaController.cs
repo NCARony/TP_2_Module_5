@@ -30,7 +30,7 @@ namespace TP2_Module_5.Controllers
 
     // GET: Pizza/Create
     public ActionResult Create()
-    {
+    { 
         var pizzaVM = new PizzaVM();
         return View(pizzaVM);
     }
@@ -39,21 +39,59 @@ namespace TP2_Module_5.Controllers
     [HttpPost]
     public ActionResult Create(PizzaVM pizzaVM)
     {
-        try
-        {
-            Pizza newPizza = new Pizza
+            try
             {
-                Nom = pizzaVM.Pizza.Nom,
-                Ingredients = FakeDb.IngredientsDisponibles.Where(i => pizzaVM.SelectedIngredients.Contains(i.Id)).ToList(),
-                Pate = FakeDb.PatesDisponibles.SingleOrDefault(p => p.Id == pizzaVM.SelectedPate)
-            };
-            Pizza addedPizza = FakeDb.AddPizza(newPizza);
-            return RedirectToAction("Index");
-        }
-        catch
-        {
-            return View();
-        }
+                if (ModelState.IsValid)
+                {
+                    Pizza newPizza = new Pizza
+                    {
+                        Nom = pizzaVM.Pizza.Nom,
+                        Ingredients = FakeDb.IngredientsDisponibles.Where(i => pizzaVM.SelectedIngredients.Contains(i.Id)).ToList(),
+                        Pate = FakeDb.PatesDisponibles.SingleOrDefault(p => p.Id == pizzaVM.SelectedPate)
+                    };
+
+                    Pizza checkPizza = FakeDb.Pizzas.FirstOrDefault(p => p.Nom == pizzaVM.Pizza.Nom);
+                    int DoublePizza = FakeDb.Pizzas.Where(p => p.Ingredients.Count() == newPizza.Ingredients.Count()
+                                                      && !p.Ingredients.Except(newPizza.Ingredients).Any()).ToList().Count();
+
+                    if (DoublePizza > 2)
+                    {
+                        ModelState.AddModelError("", "Une pizza avec ces ingrédients existe déjà");
+                    }
+                    else if (checkPizza != null)
+                    {
+                        ModelState.AddModelError("", "Ce nom de pizza existe déjà");
+                    }
+                    else if (newPizza.Pate == null)
+                    {
+                        ModelState.AddModelError("", "Le paramètre Pate est obligatoire");
+                    }
+                    else if (pizzaVM.SelectedIngredients.Count() < 2)
+                    {
+                        ModelState.AddModelError("", "La pizza doit contenir au moins 2 ingrédients");
+                    }
+                    else if (newPizza.Ingredients.Count() > 5)
+                    {
+                        ModelState.AddModelError("", "La pizza doit contenir au maximum 5 ingrédients");
+                    }
+                    else
+                    {
+                        newPizza.Id = FakeDb.Pizzas.Count == 0 ? 1 : FakeDb.Pizzas.Max(p => p.Id) + 1;
+                        FakeDb.Pizzas.Add(newPizza);
+                        return RedirectToAction("index");
+                    }
+                    return View(pizzaVM);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Une erreur est survenue lors de la soumission du formulaire");
+                    return View(pizzaVM);
+                }
+            }
+            catch
+            {
+                return View(pizzaVM);
+            }
     }
 
     // GET: Pizza/Edit/5
