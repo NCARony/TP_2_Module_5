@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections.Generic;
-using BO;
+﻿using System.Collections.Generic;
 
-namespace TP2_Module_5.Utils
+namespace TP_2_Module_5.Utils
 {
     public class FakeDb
     {

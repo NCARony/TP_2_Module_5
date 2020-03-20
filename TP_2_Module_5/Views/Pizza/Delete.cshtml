@@ -1,4 +1,4 @@
-﻿@model TP_2_Module_5.Models.PizzaVM
+﻿@model TP_2_Module_5.Pizza
 
 @{
     ViewBag.Title = "Delete";
@@ -8,20 +8,10 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>PizzaVM</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.SelectedPate)
-        </dt>
+    @Html.Partial("_PizzaDetails", Model)
 
-        <dd>
-            @Html.DisplayFor(model => model.SelectedPate)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

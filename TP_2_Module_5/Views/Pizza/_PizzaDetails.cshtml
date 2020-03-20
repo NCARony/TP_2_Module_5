@@ -1,15 +1,8 @@
-﻿@model BO.Pizza
+﻿@model TP_2_Module_5.Pizza
 
 <h4>Pizza</h4>
 <hr />
 <dl class="dl-horizontal">
-    <dt>
-        @Html.DisplayNameFor(model => model.Nom)
-    </dt>
-
-    <dd>
-        @Html.DisplayFor(model => model.Nom)
-    </dd>
 
     <dt>
         @Html.DisplayNameFor(model => model.Pate)
@@ -23,12 +16,12 @@
         @Html.DisplayNameFor(model => model.Ingredients)
     </dt>
 
-    <dd>
-        @Html.ListBoxFor(model => model.Ingredients, Model.Ingredients.Select(s => new SelectListItem { Value = s.Nom, Text = s.Nom }))
-    </dd>
+    @foreach (var ingredient in Model.Ingredients)
+    {
+        <dd>
+            @Html.DisplayFor(modelItem => ingredient.Nom)
+        </dd>
+    }
 
-</dl>   ViewBag.Title = "_PizzaDetails";
-}
-
-<h2>_PizzaDetails</h2>
+</dl>  
 

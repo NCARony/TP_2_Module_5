@@ -1,9 +1,9 @@
-﻿using TP2_Module_5.Utils;
-using System.Collections.Generic;
-using System.Linq;
+﻿using TP_2_Module_5.ViewsModels;
+using TP_2_Module_5.Utils;
 using System.Web.Mvc;
-using BO;
-using TP_2_Module_5.Models;
+using System.Linq;
+using System.Collections.Generic;
+using TP_2_Module_5;
 
 namespace TP2_Module_5.Controllers
 {
